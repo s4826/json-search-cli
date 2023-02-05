@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cs622.hw2.cli.command.JsonSearch;
+import cs622.hw2.indiegogo.IndiegogoObject;
 
 
 /**
@@ -228,9 +229,10 @@ public class JsonSearcher {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(source);
 		if (root.isArray()) {
-			for (JsonNode node : root)
-				if (jsonNodeMatches(root, searchPattern))
+			for (JsonNode node : root) {
+				if (jsonNodeMatches(node, searchPattern))
 					matchingNodes.add(node);
+			}
 		}
 		else
 			if (jsonNodeMatches(root, searchPattern))
@@ -299,18 +301,25 @@ public class JsonSearcher {
 	private boolean matchSingleNode(JsonNode node, String searchPattern) {
 		boolean found = false;
 		if (node.textValue() != null) {
-			if (ignoreCase) {
-				found = (matchMethod == MatchMethod.PATTERN) ?
-					node.textValue().matches("(?i)" + searchPattern) :
-						node.textValue().toLowerCase().contains(searchPattern.toLowerCase());
-			}
-			else {
-				found = (matchMethod == MatchMethod.PATTERN) ?
-					node.textValue().matches(searchPattern) : node.textValue().contains(searchPattern);
-			}
+			found = matchString(node.textValue(), searchPattern);
 		}
-		
 		return found;
-		
+	}
+	
+	
+	/**
+	 * Match a string against a keyword/pattern
+	 * @param stringToMatch string to match
+	 * @param searchPattern keyword/pattern to look for
+	 * @return true if string matches pattern, false otherwise
+	 */
+	private boolean matchString(String stringToMatch, String searchPattern) {
+		if (ignoreCase) {
+			return (matchMethod == MatchMethod.PATTERN) ?
+				stringToMatch.matches("(?i)" + searchPattern) :
+					stringToMatch.toLowerCase().contains(searchPattern.toLowerCase());
+		}
+		return (matchMethod == MatchMethod.PATTERN) ?
+			stringToMatch.matches(searchPattern) : stringToMatch.contains(searchPattern);
 	}
 }
