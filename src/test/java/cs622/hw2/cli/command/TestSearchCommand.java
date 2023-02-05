@@ -3,15 +3,19 @@ package cs622.hw2.cli.command;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +32,7 @@ public class TestSearchCommand {
 	
 	@BeforeEach
 	void setUpEach() {
-		search = new Search(); 
+		search = new JsonSearch(); 
 		baos = new ByteArrayOutputStream();
 		out = new PrintStream(baos);
 	}
@@ -41,12 +45,35 @@ public class TestSearchCommand {
 	}
 
 	@Test
-	void testSearchCreatesTimestamp() {
+	void testSetTimeStamp() {
 		Search spySearch = spy(search);
+		assertFalse(spySearch.getTimeStamp().isPresent());
+		spySearch.setTimeStamp();
+		assertTrue(spySearch.getTimeStamp().isPresent());
+	}
+	
+	
+	@Test
+	void testRunSearchPopulatesResultObject() throws IOException {
+		File f = File.createTempFile("test", "");
+		FileWriter fw = new FileWriter(f);
+		fw.write("{\"key1\":\"value1\",\"key2\":\"value2\"}\n");
+		fw.write("{\"key1\":\"value1 value2\",\"key2\":\"value3\"}");
+		fw.close();
+
+		JsonSearch spySearch = spy(new JsonSearch());
+		
+		// this test is not concerned with getting input arguments from the user or storing search history
 		doNothing().when(spySearch).getArgsFromInput(isA(InputStream.class), isA(PrintStream.class));
-		assertNull(spySearch.getTimeStamp());
-		spySearch.setSearchString("string").setMatchMethod(MatchMethod.PATTERN).run();
-		assertNotNull(spySearch.getTimeStamp());
+		SearchHistory historyTarget = mock(SearchHistory.class);
+
+		spySearch.setSearchString("value1");
+		spySearch.setMatchMethod(MatchMethod.KEYWORD);
+		spySearch.setIgnoreCase(true);
+		spySearch.setSearchFile(f);
+		spySearch.run();
+
+		assertTrue(spySearch.getResults().size() == 2);
 	}
 	
 	
@@ -133,5 +160,24 @@ public class TestSearchCommand {
 		assertTrue(output.contains("Invalid match method"));
 		
 		in.close();
+	}
+	
+	
+	@Test
+	void testSearchToString() {
+		search.setIgnoreCase(false);
+		search.setMatchMethod(MatchMethod.KEYWORD);
+		search.setSearchFile("file");
+		search.setTimeStamp();
+		
+		String searchParameters = search.toString();
+		System.out.println(searchParameters);
+		assertTrue(searchParameters.contains("Ignore case: false"));
+		assertTrue(searchParameters.contains("Match method: KEYWORD"));
+		assertTrue(searchParameters.contains("Search file: file"));
+		
+		Pattern p = Pattern.compile("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}");
+		Matcher m = p.matcher(searchParameters);
+		assertTrue(m.find());
 	}
 }
