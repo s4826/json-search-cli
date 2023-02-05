@@ -23,6 +23,6 @@ public class CommandProcessor {
 	public Command process(String commandString) throws InvalidCommandException {
 		if (commands.containsKey(commandString))
 			return commands.get(commandString).create();
-		throw new InvalidCommandException("Invalid command");
+		throw new InvalidCommandException(String.format("Invalid command: %s", commandString));
 	}
 }
