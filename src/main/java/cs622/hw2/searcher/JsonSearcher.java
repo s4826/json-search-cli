@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import cs622.hw2.cli.command.JsonSearch;
+
 
 /**
  * Searcher class to provide for searching JSON files for search patterns 
@@ -104,6 +106,21 @@ public class JsonSearcher {
 	 */
 	public boolean getIgnoreCase() {
 		return this.ignoreCase;
+	}
+	
+	
+	/**
+	 * Run a search parameterized by a JsonSearch object
+	 * @param jsonSearch json search object containing search parameters
+	 * @return list of JSON nodes matching search
+	 */
+	public List<JsonNode> runSearch(JsonSearch jsonSearch) {
+		this.matchMethod = jsonSearch.getMatchMethod();
+		this.ignoreCase = jsonSearch.getIgnoreCase();
+		
+		return findMatchingJsonNodes(
+				new File(jsonSearch.getAbsoluteSearchFilePath()),
+				jsonSearch.getSearchString());
 	}
 	
 	

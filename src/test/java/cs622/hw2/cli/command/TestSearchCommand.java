@@ -66,6 +66,7 @@ public class TestSearchCommand {
 		// this test is not concerned with getting input arguments from the user or storing search history
 		doNothing().when(spySearch).getArgsFromInput(isA(InputStream.class), isA(PrintStream.class));
 		SearchHistory historyTarget = mock(SearchHistory.class);
+		spySearch.setHistoryTarget(historyTarget);
 
 		spySearch.setSearchString("value1");
 		spySearch.setMatchMethod(MatchMethod.KEYWORD);
