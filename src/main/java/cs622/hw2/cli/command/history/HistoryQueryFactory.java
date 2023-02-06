@@ -27,7 +27,6 @@ public class HistoryQueryFactory implements CommandFactory {
 	 */
 	public Command create() {
 		HistoryQuery historyQuery = new HistoryQuery();
-		historyQuery.setHistoryTarget(historyTarget);
 		addCommands(historyQuery);
 		return historyQuery;
 	}

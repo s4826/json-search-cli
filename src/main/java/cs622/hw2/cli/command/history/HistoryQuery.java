@@ -24,19 +24,10 @@ import cs622.hw2.cli.command.Command;
  */
 public class HistoryQuery implements Command {
 	
-	private SearchHistory historyTarget;
 	private Map<String, Runnable> historyFunctions;
 	
 	public HistoryQuery() {
 		historyFunctions = new HashMap<>();
-	}
-	
-	
-	/**
-	 * Set the SearchHistory object that will be the target for this history query
-	 */
-	public void setHistoryTarget(SearchHistory historyTarget) {
-		this.historyTarget = historyTarget;
 	}
 	
 	

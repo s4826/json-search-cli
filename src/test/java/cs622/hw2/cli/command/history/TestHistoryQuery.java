@@ -63,7 +63,6 @@ public class TestHistoryQuery {
 	@Test
 	void testRunGetAllSearches() {
 		SearchHistory history = spy(new SearchHistory());
-		hq.setHistoryTarget(history);
 		hq.addAvailableCommand("all", history::printAllSearches);
 		
 		InputStream in = new ByteArrayInputStream("all".getBytes());
