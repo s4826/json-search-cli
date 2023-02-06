@@ -18,7 +18,7 @@ import cs622.hw2.searcher.JsonSearcher;
 
 
 /**
- * JsonSearch class, adds additional functionality to base class Search
+ * JsonSearch class, adds additional functionality to base Search class
  */
 public class JsonSearch extends Search {
 	

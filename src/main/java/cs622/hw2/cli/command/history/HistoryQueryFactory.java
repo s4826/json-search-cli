@@ -11,11 +11,17 @@ import cs622.hw2.cli.command.Command;
 import cs622.hw2.cli.command.CommandFactory;
 
 /**
- * Class to generate history queries against a SearchHistory object
+ * Class to generate history queries against a search history
  */
 public class HistoryQueryFactory implements CommandFactory {
 	private SearchHistory historyTarget;
 	
+	
+	/**
+	 * Constructor. Create a HistoryQueryFactory that will create queries
+	 * against a specific SearchHistory.
+	 * @param historyTarget
+	 */
 	public HistoryQueryFactory(SearchHistory historyTarget) {
 		this.historyTarget = historyTarget;
 	}
@@ -31,6 +37,11 @@ public class HistoryQueryFactory implements CommandFactory {
 		return historyQuery;
 	}
 	
+	
+	/**
+	 * Add available commands to the designated HistoryQuery object.
+	 * @param hq
+	 */
 	public void addCommands(HistoryQuery hq) {
 		hq.addAvailableCommand("a", historyTarget::printAllSearches);
 		hq.addAvailableCommand("all", historyTarget::printAllSearches);

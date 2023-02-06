@@ -16,8 +16,8 @@ import cs622.hw2.cli.command.Search;
 
 
 /**
- * Search history class. Stores keywords and all searches performed
- * for that keyword in a HashMap.
+ * Search history class. Central object for search history storage
+ * and retrieval.
  */
 public class SearchHistory {
 	
