@@ -61,7 +61,7 @@ public class SearchHistory {
 	
 	public void showAllSearches() {
 		searches.entrySet().stream().forEach(entry -> {
-			System.out.println(String.format("Searches for keyword \"%s\"%n--------------------%n", entry.getKey()));
+			System.out.println(String.format("Searches for keyword \"%s\"%n--------------------", entry.getKey()));
 			entry.getValue().stream().forEach(System.out::println);
 		});
 	}
