@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 
 /**
@@ -22,7 +23,7 @@ import java.util.concurrent.Callable;
 public class HistoryQuery implements Command {
 	
 	private SearchHistory historyTarget;
-	private Map<String, Callable<Void>> historyFunctions;
+	private Map<String, Runnable> historyFunctions;
 	
 	public HistoryQuery() {
 		historyFunctions = new HashMap<>();
@@ -37,6 +38,11 @@ public class HistoryQuery implements Command {
 	}
 	
 	
+	public void addAvailableCommand(String commandName, Runnable func) {
+		historyFunctions.put(commandName, func);
+	}
+	
+	
 	/**
 	 * Run the query represented by this history query object.
 	 */
@@ -45,7 +51,7 @@ public class HistoryQuery implements Command {
 		Scanner in = new Scanner(System.in);
 		String historyCommand = getOptFromInput(in, System.out);
 		try {
-			historyFunctions.get(historyCommand).call();
+			historyFunctions.get(historyCommand).run();
 		} catch (Exception e) {
 			System.out.println("Error running history command");
 		}
