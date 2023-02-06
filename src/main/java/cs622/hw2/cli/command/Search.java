@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import cs622.hw2.searcher.MatchMethod;
 
@@ -194,7 +196,25 @@ public abstract class Search implements Command {
 	protected void getSearchStringFromInput(Scanner input, PrintStream out) {
 
 		out.print("Enter a search string\n? ");
-		searchString = input.nextLine();
+		String testString = input.nextLine();
+		if (matchMethod == MatchMethod.KEYWORD) {
+			searchString = testString;
+			return;
+		}
+		
+		boolean success = false;
+		while (!success) {
+			try {
+				Pattern.compile(testString);
+				success = true;
+			} catch (PatternSyntaxException pse) {
+				System.out.printf("Invalid regex pattern. The error was: \"%s\"%n", pse.getMessage());
+				System.out.print("Please try again.\n? ");
+				testString = input.nextLine();
+			}
+		}
+		
+		searchString = testString;
 	}
 	
 	
