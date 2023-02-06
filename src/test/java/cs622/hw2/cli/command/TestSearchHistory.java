@@ -1,66 +1,87 @@
+/**
+ * Name: Sean Rawson
+ * Date: 2/6/2023
+ * Class: CS-622 Spring 2023
+ * Assignment 3
+ * Description: This file contains tests for the SearchHistory class
+ */
 package cs622.hw2.cli.command;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import cs622.hw2.searcher.MatchMethod;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.spy;
 
 public class TestSearchHistory {
 	
 	SearchHistory history;
 	
+	ByteArrayOutputStream baos;
+	PrintStream out;
+	
+	PrintStream stdout;
+	
 	@BeforeEach
 	void setUpEach() {
-		history = new SearchHistory();
+		stdout = System.out;
+		
+		history = spy(new SearchHistory());
+		baos = new ByteArrayOutputStream();
+		out = new PrintStream(baos);
+		
+		System.setOut(out);
+	}
+	
+	
+	@AfterEach
+	void tearDownEach() throws IOException {
+		baos.close();
+		out.close();
+		System.setOut(stdout);
 	}
 	
 	
 	@Test
-	void testGetUniqueSearchTerms() {
+	void testPrintUniqueSearchTerms() {
 		history.put("robot", createSearch("robot"));
 		history.put("robot", createSearch("robot"));
+		String[] lines;
 		
-		assertTrue(history.getUniqueSearchTerms().size() == 1);
+		history.printUniqueSearchTerms();
+		lines = baos.toString().split("\\n");
+		assertTrue(lines[1].equals("robot: 2 times"));
+		baos.reset();
 		
-		JsonSearch three = createSearch("dance");
-		history.put("dance", three);
-		
-		assertTrue(history.getUniqueSearchTerms().size() == 2);
+		history.put("dance", createSearch("dance"));
+		history.printUniqueSearchTerms();
+
+		lines = baos.toString().split("\\n");
+		assertTrue(lines[1].equals("robot: 2 times"));
+		assertTrue(lines[2].equals("dance: 1 time"));
 	}
 	
 	
 	@Test
-	void testUniqueSearchesWithFrequency() {
+	void testPrintTimeStamps() {
 		history.put("robot", createSearch("robot"));
 		history.put("robot", createSearch("robot"));
 		history.put("dance", createSearch("dance"));
-	
-		Map<String, List<Search>> searches = history.getAllSearches();
-		assertTrue(searches.get("robot").size() == 2);
-		assertTrue(searches.get("dance").size() == 1);
-	}
-	
-	
-	@Test
-	void testGetTimeStamps() {
-		history.put("robot", createSearch("robot"));
-		Map<String, List<LocalDateTime>> timeStamps = history.getSearchTimeStamps();
-		assertTrue(timeStamps.containsKey("robot"));
-		assertTrue(timeStamps.get("robot").get(0) instanceof LocalDateTime);
+		history.printSearchTimeStamps();
+
+		Pattern p = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+		Matcher m = p.matcher(baos.toString());
 		
-		history.put("robot", createSearch("robot"));
-		timeStamps = history.getSearchTimeStamps();
-		assertTrue(timeStamps.get("robot").size() == 2);
-		
-		history.put("dance", createSearch("dance"));
-		timeStamps = history.getSearchTimeStamps();
-		assertTrue(timeStamps.entrySet().size() == 2);
+		assertTrue(m.results().count() == 3);
 	}
 
 	
