@@ -65,7 +65,8 @@ public class SearchHistory {
 	public void printUniqueSearchTerms() {
 		System.out.println("Search terms and frequencies");
 		searches.entrySet().forEach(entry -> {
-			System.out.printf("%s: %d times%n", entry.getValue().size());
+			String timeString = (entry.getValue().size() == 1) ? "time" : "times";
+			System.out.printf("%s: %d %s%n", entry.getKey(), entry.getValue().size(), timeString);
 		});
 	}
 	
@@ -74,9 +75,12 @@ public class SearchHistory {
 	 * Print the time stamps of all search terms in this search history.
 	 */
 	public void printSearchTimeStamps() {
+		System.out.printf("Search time stamps%n----------------%n");
 		searches.entrySet().stream().forEach(entry -> {
-			System.out.printf("Searches for \'%s\'%n----------------%n", entry.getKey());
-			entry.getValue().forEach(System.out::println);
+			System.out.printf("Search term: \'%s\'%n", entry.getKey());
+			entry.getValue().stream()
+				.filter(search -> search.getTimeStamp().isPresent())
+				.forEach(search -> System.out.printf("\t%s%n", search.getTimeStamp().get()));
 		});
 	}
 	
@@ -86,7 +90,7 @@ public class SearchHistory {
 	 */
 	public void printAllSearches() {
 		searches.entrySet().stream().forEach(entry -> {
-			System.out.println(String.format("Searches for keyword \"%s\"%n--------------------", entry.getKey()));
+			System.out.printf("Searches for string %s \"%s\"%n-----------------%n", entry.getKey());
 			entry.getValue().stream().forEach(System.out::println);
 		});
 	}
