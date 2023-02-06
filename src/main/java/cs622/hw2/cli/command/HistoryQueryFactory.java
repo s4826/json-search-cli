@@ -26,6 +26,18 @@ public class HistoryQueryFactory implements CommandFactory {
 	public Command create() {
 		HistoryQuery historyQuery = new HistoryQuery();
 		historyQuery.setHistoryTarget(historyTarget);
+		addCommands(historyQuery);
 		return historyQuery;
+	}
+	
+	public void addCommands(HistoryQuery hq) {
+		hq.addAvailableCommand("a", historyTarget::printAllSearches);
+		hq.addAvailableCommand("all", historyTarget::printAllSearches);
+		
+		hq.addAvailableCommand("u", historyTarget::printUniqueSearchTerms);
+		hq.addAvailableCommand("unique", historyTarget::printUniqueSearchTerms);
+		
+		hq.addAvailableCommand("t", historyTarget::printSearchTimeStamps);
+		hq.addAvailableCommand("time", historyTarget::printSearchTimeStamps);
 	}
 }
