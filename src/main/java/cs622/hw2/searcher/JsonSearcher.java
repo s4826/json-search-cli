@@ -14,8 +14,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 import cs622.hw2.cli.command.JsonSearch;
 import cs622.hw2.indiegogo.IndiegogoObject;
@@ -25,6 +27,8 @@ import cs622.hw2.indiegogo.IndiegogoObject;
  * Searcher class to provide for searching JSON files for search patterns 
  */
 public class JsonSearcher {
+	
+	private static ObjectMapper mapper = new ObjectMapper();
 
 	private String startingField;
 	private MatchMethod matchMethod;
@@ -125,6 +129,19 @@ public class JsonSearcher {
 	}
 	
 	
+	public void readIndiegogoObjectsLineByLineFromFile(File source)
+			throws IOException, JsonProcessingException {
+		BufferedReader in = new BufferedReader(new FileReader(source));
+		List<IndiegogoObject> jsonNodes = new ArrayList<>();
+		String line;
+		while ((line = in.readLine()) != null) {
+			jsonNodes.add(mapper.readValue(line, IndiegogoObject.class));
+		}
+		
+		in.close();
+	}
+	
+	
 	/**
 	 * Find JSON nodes from a source file that match a search pattern 
 	 * @param source file to search
@@ -175,7 +192,6 @@ public class JsonSearcher {
 	protected boolean findMatchingJsonNodesLineByLine(File source, String searchPattern) throws IOException {
 		matchingNodes.clear();
 		
-		ObjectMapper mapper = new ObjectMapper();
 		BufferedReader br = new BufferedReader(new FileReader(source));
 		String in;
 		JsonNode node;
@@ -226,7 +242,6 @@ public class JsonSearcher {
 	protected boolean findMatchingJsonNodesFromTree(File source, String searchPattern) throws IOException {
 		matchingNodes.clear();
 
-		ObjectMapper mapper = new ObjectMapper();
 		JsonNode root = mapper.readTree(source);
 		if (root.isArray()) {
 			for (JsonNode node : root) {
@@ -267,6 +282,11 @@ public class JsonSearcher {
 	 * @return true on success, otherwise false
 	 */
 	protected boolean recursiveMatchNode(JsonNode node, String searchPattern) {
+		
+		// short circuit recursive matching if this node just contains a string
+		if (node.getNodeType() == JsonNodeType.STRING)
+			return matchString(node.asText(), searchPattern);
+
 		boolean found = false;
 		List<String> fields = new ArrayList<>();
 		node.fieldNames().forEachRemaining(fields::add);
