@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Tests for JsonSearcher class
  */
-public class TestSearch {
+public class TestJsonSearch {
 	
 	private static JsonSearcher searcher;
 	private File source;
