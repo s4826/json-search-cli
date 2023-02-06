@@ -1,4 +1,4 @@
-package cs622.hw2.cli.command;
+package cs622.hw2.cli.command.history;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,6 +11,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import cs622.hw2.cli.command.history.HistoryQuery;
+import cs622.hw2.cli.command.history.SearchHistory;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;

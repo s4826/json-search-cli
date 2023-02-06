@@ -21,6 +21,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import cs622.hw2.cli.command.history.SearchHistory;
 import cs622.hw2.searcher.MatchMethod; 
 
 public class TestSearchCommand {

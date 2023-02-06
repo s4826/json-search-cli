@@ -5,7 +5,7 @@
  * Assignment 3
  * Description: This file contains functionality for history queries.
  */
-package cs622.hw2.cli.command;
+package cs622.hw2.cli.command.history;
 
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
+
+import cs622.hw2.cli.command.Command;
 
 
 /**

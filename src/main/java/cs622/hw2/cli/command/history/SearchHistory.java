@@ -5,12 +5,14 @@
  * Assignment 3
  * Description: This file contains a search history class which store all searches
  */
-package cs622.hw2.cli.command;
+package cs622.hw2.cli.command.history;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cs622.hw2.cli.command.Search;
 
 
 /**

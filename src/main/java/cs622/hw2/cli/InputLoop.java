@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 import cs622.hw2.cli.command.Command;
 import cs622.hw2.cli.command.CommandProcessor;
-import cs622.hw2.cli.command.HistoryQueryFactory;
 import cs622.hw2.cli.command.InvalidCommandException;
 import cs622.hw2.cli.command.JsonSearchFactory;
-import cs622.hw2.cli.command.SearchHistory;
+import cs622.hw2.cli.command.history.HistoryQueryFactory;
+import cs622.hw2.cli.command.history.SearchHistory;
 
 
 /**

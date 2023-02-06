@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import cs622.hw2.cli.command.history.SearchHistory;
 import cs622.hw2.searcher.JsonSearcher;
 
 

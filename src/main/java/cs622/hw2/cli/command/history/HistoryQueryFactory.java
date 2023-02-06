@@ -5,8 +5,10 @@
  * Assignment 3
  * Description: This file contains functionality for generating search history queries.
  */
-package cs622.hw2.cli.command;
+package cs622.hw2.cli.command.history;
 
+import cs622.hw2.cli.command.Command;
+import cs622.hw2.cli.command.CommandFactory;
 
 /**
  * Class to generate history queries against a SearchHistory object
