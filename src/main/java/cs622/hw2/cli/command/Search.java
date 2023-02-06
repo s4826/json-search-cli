@@ -182,7 +182,7 @@ public abstract class Search implements Command {
 						"\tor 'n' for case sensitive matching\n? ");
 		}
 		
-		ignoreCase = ignore.equals("n");
+		ignoreCase = ignore.equals("y");
 	}
 	
 	
