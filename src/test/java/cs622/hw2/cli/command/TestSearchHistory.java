@@ -91,7 +91,7 @@ public class TestSearchHistory {
 	 * @param s search string for this fake search
 	 * @return JsonSearch object
 	 */
-	private JsonSearch createSearch(String s) {
+	protected static JsonSearch createSearch(String s) {
 		JsonSearch search = new JsonSearch();
 		search.setSearchString(s);
 		search.setIgnoreCase(false);
