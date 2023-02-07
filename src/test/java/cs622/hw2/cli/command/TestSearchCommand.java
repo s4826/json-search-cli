@@ -1,3 +1,10 @@
+/**
+ * Name: Sean Rawson
+ * Date: 2/6/2023
+ * Class: CS-622 Spring 2023
+ * Assignment 3
+ * Description: Search command tests
+ */
 package cs622.hw2.cli.command;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +31,10 @@ import org.junit.jupiter.api.Test;
 import cs622.hw2.cli.command.history.SearchHistory;
 import cs622.hw2.searcher.MatchMethod; 
 
+
+/**
+ * Search command test class
+ */
 public class TestSearchCommand {
 	
 	private Search search;
