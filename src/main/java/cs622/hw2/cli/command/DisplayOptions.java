@@ -79,15 +79,24 @@ public class DisplayOptions implements CommandFactory, Command {
 		return this.printAllFields;
 	}
 	
+	
+	/**
+	 * Return this DisplayOptions object as a Command object
+	 */
 	public Command create() {
 		return(this);
 	}
 	
+	
+	/**
+	 * Run the display options modification dialog to get
+	 * display option changes from the user.
+	 */
 	public void run() {
 		String message = "Choose a display options command.\n"
-					   + "Reset to display all fields (a)\n"
-					   + "Print only certain display fields (f)\n"
-					   + "Show current display options (s)\n"
+					   + "Reset to display all fields (a/all)\n"
+					   + "Display only certain fields (f/fields)\n"
+					   + "Show current display options (s/show)\n"
 					   + "Go back to main menu (b)\n? ";
 		System.out.print(message);
 		
@@ -98,10 +107,12 @@ public class DisplayOptions implements CommandFactory, Command {
 		while (!input.equals("b")) {
 			switch (input) {
 				case "a":
+				case "all":
 					setPrintAllFieldsFlag(true);
 					System.out.println(updated);
 					break;
 				case "f":
+				case "fields":
 					System.out.print("Enter a comma separated list of field names\n? ");
 					input = in.nextLine();
 					setDisplayFields(input.split("[\\s,]+"));
@@ -109,6 +120,7 @@ public class DisplayOptions implements CommandFactory, Command {
 					System.out.println(updated);
 					break;
 				case "s":
+				case "show":
 					System.out.printf("%nPrint all fields: %s%n%n", printAllFields);
 					fields.forEach(System.out::println);
 					break;
