@@ -47,24 +47,63 @@ public class JsonSearch extends Search {
 	}
 	
 	
+	/**
+	 * Set the search history object that will save this search and its results. 
+	 * @param historyTarget SearchHistory object to save to
+	 */
 	public void setHistoryTarget(SearchHistory historyTarget) {
 		this.historyTarget = historyTarget;
 	}
 
 	
 	/**
-	 * Run the search parameterized by this JsonSearch object and store the results
-	 * in the history object that this class is linked with.
+	 * Run the search parameterized by this JsonSearch object. Then store the results
+	 * and print them.
 	 */
-	@Override
 	public void run() {
 		setTimeStamp();
 		getArgsFromInput(System.in, System.out);
 		
 		results = searcher.runSearch(this); 
+		historyTarget.put(this.getSearchString(), this);
 		
-		historyTarget.put(getSearchString(), this);
+		DisplayOptions options = DisplayOptions.getInstance();
+		printSearchResults(options);
 	}	
+	
+	
+	/**
+	 * Print the results of this search, according to the provided display options
+	 * @param options DisplayOptions object containing search result display preferences
+	 */
+	public void printSearchResults(DisplayOptions options) {
+		if (options.getPrintAllFieldsFlag())
+			results.forEach(System.out::println);
+		else {
+			List<String> fields = options.getDisplayFields();
+			results.stream().forEach(result -> printFormattedSearchResult(result, fields));
+		}
+		System.out.printf("Total results: %d%n", results.size());
+	}
+	
+	
+	/**
+	 * Print a single search result 
+	 * @param result
+	 * @param fields
+	 */
+	public void printFormattedSearchResult(JsonNode result, List<String> fields) {
+		StringBuilder format = new StringBuilder();
+		format.append("{");
+		for (String field : fields) {
+			format.append(String.format("\"%s\": %s, ", field, result.path(field).toString()));
+		}
+		
+		format.delete(format.length() - 2, format.length());
+		format.append("}");
+		
+		System.out.println(format.toString());
+	}
 	
 	
 	@Override
