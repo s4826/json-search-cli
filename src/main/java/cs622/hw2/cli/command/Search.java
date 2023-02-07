@@ -74,33 +74,54 @@ public abstract class Search implements Command {
 	
 	/**
 	 * Set the file to search.
-	 * @param fileName Name of file to search. Can be a file name or a 
+	 * @param fileName name of file to search, as a string 
 	 */
 	public void setSearchFile(String fileName) {
 		this.fileToSearch = new File(fileName);
 	}
 	
 	
+	/**
+	 * Set search file.
+	 * @param file file object designating search file
+	 */
 	public void setSearchFile(File file) {
 		this.fileToSearch = file;
 	}
 
 
+	/**
+	 * Get the search string used for this search
+	 * @return search string
+	 */
 	public String getSearchString() {
 		return this.searchString; 
 	}
 	
 	
+	/**
+	 * Get the match method used for this search
+	 * @return MatchMethod.KEYWORD or MatchMethod.PATTERN
+	 */
 	public MatchMethod getMatchMethod() {
 		return this.matchMethod;
 	}
 	
 	
+	/**
+	 * Get the ignore case flag for this search
+	 * @return true for ignore case, false for consider case
+	 */
 	public boolean getIgnoreCase() {
 		return this.ignoreCase;
 	}
 	
 	
+	/**
+	 * Get an Optional containing the time stamp of this search. If the
+	 * search hasn't been run yet, the optional will be empty. 
+	 * @return
+	 */
 	public Optional<LocalDateTime> getTimeStamp() {
 		if (timeStamp == null)
 			return Optional.empty();
@@ -108,6 +129,10 @@ public abstract class Search implements Command {
 	}
 	
 	
+	/**
+	 * Get the absolute path of the search file for this search
+	 * @return absolute path as a string
+	 */
 	public String getAbsoluteSearchFilePath() {
 		return this.fileToSearch.getAbsolutePath();
 	}
