@@ -14,13 +14,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 import cs622.hw2.cli.command.JsonSearch;
-import cs622.hw2.indiegogo.IndiegogoObject;
 
 
 /**
@@ -129,19 +127,6 @@ public class JsonSearcher {
 	}
 	
 	
-	public void readIndiegogoObjectsLineByLineFromFile(File source)
-			throws IOException, JsonProcessingException {
-		BufferedReader in = new BufferedReader(new FileReader(source));
-		List<IndiegogoObject> jsonNodes = new ArrayList<>();
-		String line;
-		while ((line = in.readLine()) != null) {
-			jsonNodes.add(mapper.readValue(line, IndiegogoObject.class));
-		}
-		
-		in.close();
-	}
-	
-	
 	/**
 	 * Find JSON nodes from a source file that match a search pattern 
 	 * @param source file to search
@@ -197,7 +182,8 @@ public class JsonSearcher {
 		JsonNode node;
 		while ((in = br.readLine()) != null) {
 			node = mapper.readTree(in);
-			if (jsonNodeMatches(node, searchPattern))
+			node = findStartingField(node);
+			if (recursiveMatchNode(node, searchPattern))
 				matchingNodes.add(node);
 		}
 		
@@ -243,37 +229,40 @@ public class JsonSearcher {
 		matchingNodes.clear();
 
 		JsonNode root = mapper.readTree(source);
+		root = findStartingField(root);
+
 		if (root.isArray()) {
 			for (JsonNode node : root) {
-				if (jsonNodeMatches(node, searchPattern))
+				if (recursiveMatchNode(node, searchPattern))
 					matchingNodes.add(node);
 			}
 		}
 		else
-			if (jsonNodeMatches(root, searchPattern))
+			if (recursiveMatchNode(root, searchPattern))
 				matchingNodes.add(root);
 
 		return (matchingNodes.size() > 0);
 	}
-
+	
 	
 	/**
-	 * Search all elements of the specified JsonNode for a search string
-	 * @param node JsonNode to search
-	 * @param searchPattern string to search for
-	 * @return true if the string is found anywhere in the node, false otherwise
+	 * Find the top level starting field for searches. If it doesn't exist,
+	 * default to searching the entire record/node.
+	 * @param root root node of JSON object
+	 * @return child node corresponding to field name startingField if it exists,
+	 * otherwise unchanged root node
 	 */
-	protected boolean jsonNodeMatches(JsonNode node, String searchPattern) {
-		if (!node.has(startingField)) {
+	protected JsonNode findStartingField(JsonNode root) {
+		if (root.has(startingField))
+			root = root.path(startingField);
+		else {
 			System.out.println(
 				String.format("Json node has no '%s' field. Falling back to search of entire node.", startingField));
 			System.out.println("This may match on fields that you aren't interested in.");
-			return recursiveMatchNode(node, searchPattern);
 		}
-		return recursiveMatchNode(node.get(startingField), searchPattern);
-		
+		return root;
 	}
-	
+
 	
 	/**
 	 * Recursively search a JsonNode for values matching a search string
