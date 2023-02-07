@@ -92,8 +92,8 @@ public class SearchHistory {
 	 */
 	public void printAllSearches() {
 		searches.entrySet().stream().forEach(entry -> {
-			System.out.printf("Searches for string %s \"%s\"%n-----------------%n", entry.getKey());
-			entry.getValue().stream().forEach(System.out::println);
+			System.out.printf("Searches for string \"%s\"%n-----------------%n", entry.getKey());
+			entry.getValue().stream().forEach(value -> System.out.printf("%n%s%n", value));
 		});
 	}
 	
