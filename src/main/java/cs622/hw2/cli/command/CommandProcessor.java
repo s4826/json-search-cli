@@ -9,9 +9,6 @@ package cs622.hw2.cli.command;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 
 /**

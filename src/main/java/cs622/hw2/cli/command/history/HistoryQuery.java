@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
 
 import cs622.hw2.cli.command.Command;
 
@@ -46,6 +44,7 @@ public class HistoryQuery implements Command {
 		try {
 			historyFunctions.get(historyCommand).run();
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Error running history command");
 		}
 	}
