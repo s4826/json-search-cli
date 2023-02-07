@@ -179,9 +179,10 @@ public abstract class Search implements Command {
 	protected void getIgnoreCaseFromInput(Scanner input, PrintStream out) {
 		out.print("Ignore case when matching ('y' for case insensitive, 'n' for case sensitive)\n? ");
 		String ignore = input.nextLine();
-		while (!("yn".contains(ignore))) {
+		while (!(ignore.equals("y") || ignore.equals("n"))) {
 			out.print("Invalid option. Please enter 'y' for case insensitive matching\n" +
 						"\tor 'n' for case sensitive matching\n? ");
+			ignore = input.nextLine();
 		}
 		
 		ignoreCase = ignore.equals("y");
