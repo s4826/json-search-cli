@@ -14,6 +14,7 @@ import cs622.hw2.cli.command.CommandFactory;
  * Class to generate history queries against a search history
  */
 public class HistoryQueryFactory implements CommandFactory {
+
 	private SearchHistory historyTarget;
 	
 	

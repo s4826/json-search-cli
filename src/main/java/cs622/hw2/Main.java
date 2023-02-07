@@ -34,7 +34,7 @@ public class Main {
 		String field2 = "close_date";
 		for (JsonNode node : results) {
 			node = node.path(jsonSearcher.getStartingField());
-			System.out.printf("{\"%s\": %.1f%%, \"%s\": %s}%n",
+			System.out.printf("{\"%s\": %.2f%%, \"%s\": %s}%n",
 								field1,
 								node.path(field1).asDouble() * 100,
 								field2,
@@ -49,7 +49,7 @@ public class Main {
 	 * way, get a list of all files, excluding directories, at a depth of 1 in the
 	 * data directory.
 	 * @param dataDir data directory to search
-	 * @return
+	 * @return List of files
 	 */
 	public static List<File> getFilesInDataDirectory(File dataDir) {
 		List<File> filesToMerge = new ArrayList<>();
