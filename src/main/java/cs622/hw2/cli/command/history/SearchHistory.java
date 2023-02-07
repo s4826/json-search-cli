@@ -7,6 +7,7 @@
  */
 package cs622.hw2.cli.command.history;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,9 @@ public class SearchHistory {
 			System.out.printf("Search term: \'%s\'%n", entry.getKey());
 			entry.getValue().stream()
 				.filter(search -> search.getTimeStamp().isPresent())
-				.forEach(search -> System.out.printf("\t%s%n", search.getTimeStamp().get()));
+				.forEach(search -> System.out.printf("\t%s%n",
+									search.getTimeStamp().get()
+							 		.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME).split("\\.")[0]));
 		});
 	}
 	
