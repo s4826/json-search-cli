@@ -1,9 +1,9 @@
 # CS622 Assignment 2 - Sean Rawson
 
 ## Requirements
-Java 11 
-Jackson 2.13
-JUnit 5
+Java 11  
+Jackson 2.13  
+JUnit 5  
 
 ## Running the program
 The main entry point for the program is in class ```Main```. The easiest way to
